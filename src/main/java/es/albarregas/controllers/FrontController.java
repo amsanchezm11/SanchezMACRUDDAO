@@ -38,7 +38,7 @@ public class FrontController extends HttpServlet {
 
         switch (boton) {
             case "Agregar":
-                url = "/JSP/agregarVista.jsp";
+                url = "/JSP/AGREGAR/agregarVista.jsp";
                 break;
             /* Tanto en los casos visualizar, modificar y eliminar vamos a pasar la lista completa de los usuarios con
                 sus atributos ya que con una sola consulta a la BBDD obtengo una lista que es compatible con todas las 

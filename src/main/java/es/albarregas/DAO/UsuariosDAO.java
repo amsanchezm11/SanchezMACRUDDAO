@@ -101,7 +101,7 @@ public class UsuariosDAO implements IUsuariosDAO {
         String mensaje = "";
 
         try {
-            PreparedStatement preparada = null;            
+            PreparedStatement preparada = null;
             // Preparamos una consulta para realizar el insert correspondiente en la bbdd
             String consulta = "INSERT INTO usuarios (nombre, apellidos, fechaNacimiento, genero, username, password) VALUES (?, ?, ?, ?, ?, md5(?))";
             preparada = ConnectionFactory.getConnection().prepareStatement(consulta);
@@ -122,16 +122,22 @@ public class UsuariosDAO implements IUsuariosDAO {
              */
             return mensaje = "Los datos introducidos en la base de datos son:";
         } catch (SQLException e) {
-            if (e.getErrorCode() == 1146) {
-                // Capturamos el error 1146 y lo almacenamos en el mensaje
-                return mensaje = "La tabla no existe";
-            } else {
-                return mensaje = "Ha ocurrido un error al insertar los datos";
+            switch (e.getErrorCode()) {
+                case 1146:
+                    // Capturamos el error 1146 y lo almacenamos en el mensaje
+                    return mensaje = "Error. La tabla no existe";
+                case 1062:
+                    // Capturamos el error 1062 y lo almacenamos en mensaje
+                    mensaje = "Error. Ya existe un usuario con el username " + usuario.getUsername();
+                    break;
+                default:
+                    return mensaje = "Ha ocurrido un error al insertar los datos";
             }
         } finally {
             // Cerramos conexión a la Base de Datos
             this.closeConnection();
         }
+        return mensaje;
     }
 
     @Override

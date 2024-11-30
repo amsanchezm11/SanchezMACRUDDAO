@@ -29,9 +29,9 @@
                 <div>
                     <label>G&eacute;nero:</label>
                     <select name="genero">
-                        <option value="M" ${param.genero == null || param.genero == "M" ? "selected" : ""}>Mujer</option>
-                        <option value="H" ${param.genero == "H" ? "selected" : ""}>Hombre</option>
-                        <option value="O" ${param.genero == "O" ? "selected" : ""}>Otro</option>
+                        <option value="Mujer" ${param.genero == null || param.genero == "Mujer" ? "selected" : ""}>Mujer</option>
+                        <option value="Hombre" ${param.genero == "Hombre" ? "selected" : ""}>Hombre</option>
+                        <option value="Otro" ${param.genero == "Otro" ? "selected" : ""}>Otro</option>
                     </select>
                 </div>
                 <div>
