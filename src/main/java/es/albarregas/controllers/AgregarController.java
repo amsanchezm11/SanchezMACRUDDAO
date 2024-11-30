@@ -38,10 +38,10 @@ public class AgregarController extends HttpServlet {
             UsuarioBean usuario = Utils.rellenarUsuario(request);
             // Añadimos los datos del usuaio a la Base de Datos y modificamos el mensaje
             mensaje = adao.agregarUsuario(usuario);
-            // Pasamo el mensaje por petición
+            // Pasamos el mensaje por petición
             request.setAttribute("mensaje", mensaje);
             // Comprobamos si el mensaje contiene la palabra error
-            if (mensaje.contains("error")) {
+            if (mensaje.contains("Error")) {
                  url = "JSP/AGREGAR/agregarVista.jsp";          
             }else{
                // Pasamos por petición el bean

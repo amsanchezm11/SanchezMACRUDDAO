@@ -1,11 +1,15 @@
 package es.albarregas.models;
 
+import es.albarregas.DAO.IUsuariosDAO;
+import es.albarregas.DAO.UsuariosDAO;
 import es.albarregas.beans.UsuarioBean;
 import es.albarregas.beans.UsuarioBean.Genero;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -89,9 +93,8 @@ public class Utils {
     /**
      * Método que rellena un objeto UsuarioBean utilizando los parámetros de una
      * solicitud HTTP. Los valores de los parámetros se asignan automáticamente
-     * a las propiedades del objeto, incluyendo la conversión de fechas y
-     * enums.
-     * 
+     * a las propiedades del objeto, incluyendo la conversión de fechas y enums.
+     *
      * @param request la solicitud HTTP que contiene los parámetros para poblar
      * el UsuarioBean.
      * @return un objeto UsuarioBean con los valores de los parámetros del
@@ -117,6 +120,49 @@ public class Utils {
         }
 
         return usuario;
+    }
+
+    public static List<UsuarioBean> rellenarListaBorrar2(String[] eliminarUsuario) {
+        IUsuariosDAO adao = new UsuariosDAO();
+        List<UsuarioBean> lista = adao.getTodosUsuarios();
+        List<UsuarioBean> usuariosBorrar = new ArrayList<>();
+
+        for (UsuarioBean usuario : lista) {
+            for (String id : eliminarUsuario) {
+                if (usuario.getId() == Short.parseShort(id)) {
+                    usuariosBorrar.add(usuario);
+                }
+            }
+        }
+        return usuariosBorrar;
+    }
+
+    /**
+     * Método que rellena una lista de UsuarioBeans con todos los atributos que se va a 
+     * utilizar para mostrar en la vista confirmarEliminarVista. Dicho método se rellena
+     * sólo con los usuarios que han sido seleccionados en la vista eliminarVista
+     *
+     * @param eliminarUsuario Lista de ids(String) de los usuarios que se han
+     * seleccionado en el formulario de la vista eliminarVista
+     * @param lista Lista de todos los usuarios que se ha obtenido de la Base de
+     * Datos
+     * @return Una lista de UsuarioBean con todos los atributos que se van a
+     * mostrar en la vista confirmarEliminarVista
+     *
+     */
+    public static List<UsuarioBean> rellenarListaBorrar(String[] eliminarUsuario, List<UsuarioBean> lista) {
+        //IUsuariosDAO adao = new UsuariosDAO();
+        //List<UsuarioBean> lista = adao.getTodosUsuarios();
+        List<UsuarioBean> usuariosBorrar = new ArrayList<>();
+
+        for (UsuarioBean usuario : lista) {
+            for (String id : eliminarUsuario) {
+                if (usuario.getId() == Short.parseShort(id)) {
+                    usuariosBorrar.add(usuario);
+                }
+            }
+        }
+        return usuariosBorrar;
     }
 
 }

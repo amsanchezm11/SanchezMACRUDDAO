@@ -23,39 +23,23 @@
                 <th>Género</th>
                 <th>Usuario</th>
                 </thead>
-                <c:if test="${requestScope.listaBorrar != null}">
-                    <c:set var="usuarioIds" value="${requestScope.listaBorrar}" />
-                    <c:forEach var="usuarioId" items="${usuarioIds}">
-                        <c:forEach var="usuario" items="${sessionScope.usuarios}">
-                            <!-- Compara el id del usuario con el id seleccionado -->
-                            <c:if test="${usuario.id == usuarioId}">
-                                <tr>
-                                    <td>${usuario.id}</td>        
-                                    <td>${usuario.nombre}</td>
-                                    <td>${usuario.apellidos}</td>
-                                    <td><fmt:formatDate pattern="dd 'de' MMMMM 'de' yyyy" value="${usuario.fechaNac}" /></td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${usuario.genero eq 'M'}">
-                                                <c:out value="Mujer"/>
-                                            </c:when>
-                                            <c:when test="${usuario.genero eq 'H'}">
-                                                <c:out value="Hombre"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:out value="Otro"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>${usuario.username}</td>
-                                </tr>
-                                <!-- Input de tipo hidden para enviar el ID al servlet -->
-                                <input type="hidden" name="modificarUsuario" value="${usuario.id}" />
-                            </c:if>
-                        </c:forEach>
+                <c:forEach var="usuarioPrincipal" items="${sessionScope.usuarios}">
+                    <c:forEach var="usuarioBorrar" items="${sessionScope.listaBorrar}">
+                        <c:if test="${usuarioPrincipal.id eq usuarioBorrar.id}">
+                            <tr>
+                                <td>${usuarioBorrar.id}</td>
+                                <td>${usuarioBorrar.nombre}</td>
+                                <td>${usuarioBorrar.apellidos}</td>
+                                <td>
+                                    <fmt:formatDate pattern="dd 'de' MMMMM 'de' yyyy" value="${usuarioBorrar.fechaNac}" />
+                                </td>
+                                <td>${usuarioBorrar.genero}</td>
+                                <td>${usuarioBorrar.username}</td>
+                            </tr>
+                            <input type="hidden" name="modificarUsuario" value="${usuarioBorrar.id}" />
+                        </c:if>
                     </c:forEach>
-                </c:if>
-
+                </c:forEach>
             </table>
 
             <div class="formulario-botones modificar-botones">
@@ -63,9 +47,6 @@
                 <a href="VolverController" class="enlace-acciones">Cancelar</a>
             </div>
         </form>
-
-
-
 
         <c:import url="/INC/pie.inc"/>
     </body>

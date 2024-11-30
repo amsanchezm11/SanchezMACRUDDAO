@@ -28,9 +28,17 @@ public class VolverController extends HttpServlet {
         //    sesion.invalidate();                    // BORRAR MÁS ADELANTE
         //}
         
+        // Si existe el atributo usuarios
         if (sesion.getAttribute("usuarios") != null) {
             sesion.removeAttribute("usuarios");
         }
+        // Si existe el atributo listaBorrar
+        if (sesion.getAttribute("listaBorrar") != null) {
+            sesion.removeAttribute("listaBorrar");
+        }
+        
+        
+        
         // Redirigimos al usuario al index    
         request.getRequestDispatcher(".").forward(request, response);
 

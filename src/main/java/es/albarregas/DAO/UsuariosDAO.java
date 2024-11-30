@@ -131,7 +131,7 @@ public class UsuariosDAO implements IUsuariosDAO {
                     mensaje = "Error. Ya existe un usuario con el username " + usuario.getUsername();
                     break;
                 default:
-                    return mensaje = "Ha ocurrido un error al insertar los datos";
+                    return mensaje = "Error. Ha ocurrido un error al insertar los datos";
             }
         } finally {
             // Cerramos conexión a la Base de Datos
@@ -177,6 +177,66 @@ public class UsuariosDAO implements IUsuariosDAO {
             this.closeConnection();
         }
         return mensaje;
+    }
+
+    @Override
+    public String eliminarUsuarios(List<UsuarioBean> lista) {
+        String mensaje = "";
+        PreparedStatement preparada = null;
+        int resultados = 0;
+        try {
+            String sentencia = "DELETE FROM usuarios WHERE id = ?";
+
+            for (UsuarioBean usuario : lista) {
+                preparada = ConnectionFactory.getConnection().prepareStatement(sentencia);
+                preparada.setInt(1, usuario.getId());
+                resultados += preparada.executeUpdate();
+            }
+            // Modificamos el mensaje para notificar el nº de registros que se han eliminado
+            mensaje = "Se han eliminado " + resultados + " registros";
+
+        } catch (SQLException ex) {
+            mensaje = "Error. Ha ocurrido un problema en la Base de Datos";
+        }
+
+        return mensaje;
+    }
+
+    @Override
+    public UsuarioBean getUsuarioPorId(int id) {
+        
+        UsuarioBean user = null;
+        String consulta = "SELECT * FROM usuarios WHERE id = ?";
+          try {
+            PreparedStatement preparada = ConnectionFactory.getConnection().prepareStatement(consulta);
+            preparada.setInt(1, id);
+            ResultSet resultado = preparada.executeQuery();         
+
+            if (resultado.next()) {
+
+                user = new UsuarioBean();
+                user.setId(resultado.getShort("id"));
+                user.setNombre(resultado.getString("nombre"));
+                user.setApellidos(resultado.getString("apellidos"));
+                user.setFechaNac(resultado.getDate("fechaNacimiento"));
+                user.setStringToGenero(resultado.getString("genero"));
+                user.setUsername(resultado.getString("username"));
+                user.setPassword1(resultado.getString("password"));
+                
+            }
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 1146) {
+                // Capturamos el error 1146 y lo imprimimos por consola             
+                System.out.print("La tabla no existe");
+            } else {
+                // Capturamos cualquiera del resto de errores que puedan ocurrir y lo imprimimos por consola 
+                System.out.print("Ha ocurrido un error al acceder a la tabla");
+            }
+        } finally {
+            // Cerramos conexión
+            this.closeConnection();
+        }
+          return user;
     }
 
 }
