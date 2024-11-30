@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -47,17 +48,30 @@ public class FrontController extends HttpServlet {
                 usuarios = adao.getTodosUsuarios();
                 if (usuarios == null || usuarios.isEmpty()) {
                     url = "JSP/NOTIFICACIONES/sinDatosVista.jsp";
-                } else {                   
+                } else {
                     request.setAttribute("listaVisualizar", usuarios);
                     url = "JSP/VISUALIZAR/visualizarVista.jsp";
                 }
-
                 break;
             /* Tanto en los casos modificar y eliminar vamos a pasar la lista completa de los usuarios con
                 los atributos id, nombre y apellidos por sesión */
             case "Modificar":
             case "Eliminar":
+                // Obtenemos la lista de usuarios de la bbdd y la pasamos pos sesión en caso de que haya registros
+                usuarios = adao.getUsuariosNombreApellidos();
+                if (usuarios == null || usuarios.isEmpty()) {
+                    url = "JSP/NOTIFICACIONES/sinDatosVista.jsp";
+                } else {
+                    
+                    // Pasamos la lista por sesión en ambos casos
+                    request.getSession().setAttribute("usuarios", usuarios);
+                    if (boton.equals("Modificar")) {
+                        url = "JSP/MODIFICAR/modificarVista.jsp";
+                    } else {
+                        url = "JSP/ELIMINAR/eliminarVista.jsp";
+                    }
 
+                }
                 break;
         }
         // Redirigimos al usuario a la url correspondiente

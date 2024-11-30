@@ -24,8 +24,12 @@ public class VolverController extends HttpServlet {
         HttpSession sesion = request.getSession(false);
         
         // En caso de que exista eliminamos la sesión y redirigimos al usuario al index
-        if (request.getSession() != null) {
-            sesion.invalidate();
+        //if (request.getSession() != null) {
+        //    sesion.invalidate();                    // BORRAR MÁS ADELANTE
+        //}
+        
+        if (sesion.getAttribute("usuarios") != null) {
+            sesion.removeAttribute("usuarios");
         }
         // Redirigimos al usuario al index    
         request.getRequestDispatcher(".").forward(request, response);
