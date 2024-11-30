@@ -34,9 +34,7 @@ public class EliminarController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Recuperamos la sesión
-        HttpSession sesion = request.getSession();
+      
         String url = "";
         String mensaje = "";
         String boton = request.getParameter("botonEliminar");

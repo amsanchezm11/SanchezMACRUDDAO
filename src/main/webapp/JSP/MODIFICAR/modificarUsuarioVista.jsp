@@ -30,9 +30,9 @@
                 <div>
                     <label>G&eacute;nero:</label>
                     <select name="genero">
-                        <option value="M" ${sessionScope.usuarioObtenido.genero == "M" ? "selected" : ""}>Mujer</option>
-                        <option value="H" ${sessionScope.usuarioObtenido.genero == "H" ? "selected" : ""}>Hombre</option>
-                        <option value="O" ${sessionScope.usuarioObtenido.genero == "O" ? "selected" : ""}>Otro</option>
+                        <option value="Mujer" ${sessionScope.usuarioObtenido.genero == "Mujer" ? "selected" : ""}>Mujer</option>
+                        <option value="Hombre" ${sessionScope.usuarioObtenido.genero == "Hombre" ? "selected" : ""}>Hombre</option>
+                        <option value="Otro" ${sessionScope.usuarioObtenido.genero == "Otro" ? "selected" : ""}>Otro</option>
                     </select>
                 </div>
                 <div>
