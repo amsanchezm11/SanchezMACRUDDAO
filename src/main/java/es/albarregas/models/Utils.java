@@ -122,21 +122,6 @@ public class Utils {
         return usuario;
     }
 
-    public static List<UsuarioBean> rellenarListaBorrar2(String[] eliminarUsuario) {
-        IUsuariosDAO adao = new UsuariosDAO();
-        List<UsuarioBean> lista = adao.getTodosUsuarios();
-        List<UsuarioBean> usuariosBorrar = new ArrayList<>();
-
-        for (UsuarioBean usuario : lista) {
-            for (String id : eliminarUsuario) {
-                if (usuario.getId() == Short.parseShort(id)) {
-                    usuariosBorrar.add(usuario);
-                }
-            }
-        }
-        return usuariosBorrar;
-    }
-
     /**
      * Método que rellena una lista de UsuarioBeans con todos los atributos que se va a 
      * utilizar para mostrar en la vista confirmarEliminarVista. Dicho método se rellena
