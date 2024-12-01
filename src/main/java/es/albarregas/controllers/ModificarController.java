@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -33,8 +32,12 @@ public class ModificarController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Recuperamos la sesión
-        HttpSession sesion = request.getSession();
+        /*
+        * - URL para redireccionar
+        * - Mensaje para mostrar
+        * - Objeto DAO de dónde vamos a sacar la información de la BBDD
+        * - Valor del botón que ha pulsado el usuario
+         */
         String url = "";
         String mensaje = "";
         IUsuariosDAO adao = new UsuariosDAO();
@@ -43,7 +46,6 @@ public class ModificarController extends HttpServlet {
         switch (boton) {
             case "Realizar":
                 String[] modificarUsuario = request.getParameterValues("modificarUsuario");
-                int id = Integer.parseInt(modificarUsuario[0]);
                 /* Comprobamos que el parametro que nos entra es nulo o que el array de valores es 0. En caso de que
                    se de una de esas dos opciones significará que el usuario no ha seleccionado ningun usuario */
                 if (modificarUsuario == null || modificarUsuario.length == 0) {
@@ -51,6 +53,7 @@ public class ModificarController extends HttpServlet {
                     request.setAttribute("mensaje", mensaje);
                     url = "/JSP/MODIFICAR/modificarVista.jsp";
                 } else {
+                    int id = Integer.parseInt(modificarUsuario[0]);
                     UsuarioBean usuarioBD = adao.getUsuarioPorId(id);
                     request.getSession().setAttribute("usuarioObtenido", usuarioBD);
                     url = "/JSP/MODIFICAR/modificarUsuarioVista.jsp";
@@ -59,20 +62,20 @@ public class ModificarController extends HttpServlet {
             case "Actualizar":
                 // Verificamos si los campos del formulario están correctos y lo almacenamos en el mensaje
                 mensaje = Utils.comprobarCampos(request);
-                // Si todo está OK en el formulario
+                // Si todo está "OK" en el formulario
                 if (mensaje.equals("")) {
                     // Rellenamos un nuevo bean Usuario con los datos del formulario
                     UsuarioBean usuarioModificado = Utils.rellenarUsuario(request);
                     // Encriptamos la contraseña para poder comparar los ususarios
                     usuarioModificado.setPassword1(usuarioModificado.getPassword1Encriptado());
                     // Obtenemos el bean del usuario original desde la sesión
-                    UsuarioBean usuarioObtenido = (UsuarioBean) sesion.getAttribute("usuarioObtenido");
+                    UsuarioBean usuarioObtenido = (UsuarioBean) request.getSession().getAttribute("usuarioObtenido");
 
                     if (usuarioModificado.equals(usuarioObtenido)) {
                         // Si son iguales notificamos al usuario que no hubo cambios en los datos del usuario
                         mensaje = "No se realizaron cambios en la información del usuario";
                         request.setAttribute("mensaje", mensaje);
-
+                        url = "/JSP/MODIFICAR/finModificarVista.jsp";
                     } else {
                         // Si los beans son distintos hacemos la sentencia en la bbdd
                         mensaje = adao.modificarUsuario(usuarioModificado);

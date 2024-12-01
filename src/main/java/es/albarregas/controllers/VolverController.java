@@ -22,12 +22,7 @@ public class VolverController extends HttpServlet {
         // Aquí manejamos la redirección de los botones Cancelar e Inicio
         // Obtenemos la sesión existente
         HttpSession sesion = request.getSession(false);
-        
-        // En caso de que exista eliminamos la sesión y redirigimos al usuario al index
-        //if (request.getSession() != null) {
-        //    sesion.invalidate();                    // BORRAR MÁS ADELANTE
-        //}
-        
+             
         // Si existe el atributo usuarios
         if (sesion.getAttribute("usuarios") != null) {
             sesion.removeAttribute("usuarios");
@@ -36,9 +31,7 @@ public class VolverController extends HttpServlet {
         if (sesion.getAttribute("listaBorrar") != null) {
             sesion.removeAttribute("listaBorrar");
         }
-        
-        
-        
+               
         // Redirigimos al usuario al index    
         request.getRequestDispatcher(".").forward(request, response);
 
@@ -46,8 +39,7 @@ public class VolverController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        //processRequest(request, response);
+            throws ServletException, IOException {        
     }
 
     @Override

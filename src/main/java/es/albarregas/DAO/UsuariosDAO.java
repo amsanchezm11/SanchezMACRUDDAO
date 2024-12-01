@@ -193,7 +193,7 @@ public class UsuariosDAO implements IUsuariosDAO {
                 resultados += preparada.executeUpdate();
             }
             // Modificamos el mensaje para notificar el nº de registros que se han eliminado
-            mensaje = "Se han eliminado " + resultados + " registros";
+            mensaje = "Se han eliminado " + resultados + (resultados == 1 ? " registro" : " registros");
 
         } catch (SQLException ex) {
             mensaje = "Error. Ha ocurrido un problema en la Base de Datos";

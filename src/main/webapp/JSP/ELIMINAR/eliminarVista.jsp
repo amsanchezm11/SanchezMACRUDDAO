@@ -10,7 +10,7 @@
 </head>
 <body class="principal">
     <c:import url="/INC/cabecera.inc"/>
-    <h1 class="visualizar-h1">Elige un usuario para cambiar sus datos</h1>
+    <h1 class="visualizar-h1">Elige uno o m&aacute;s usuarios para eliminar</h1>
 
         <form action="${contexto}/EliminarController" method="post" class="formulario-modificar">
             <table class="tabla-visualizar">

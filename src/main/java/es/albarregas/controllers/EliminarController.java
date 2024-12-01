@@ -1,6 +1,5 @@
 package es.albarregas.controllers;
 
-//import es.albarregas.connections.Conexion;
 import es.albarregas.DAO.IUsuariosDAO;
 import es.albarregas.DAO.UsuariosDAO;
 import es.albarregas.beans.UsuarioBean;
@@ -12,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -49,19 +47,12 @@ public class EliminarController extends HttpServlet {
                     request.setAttribute("mensaje", mensaje);
                     url = "/JSP/ELIMINAR/eliminarVista.jsp";
                 } else {
+                    // Obtenemos la lista con todos los usuarios con todos sus atributos de la BBDD
                     List<UsuarioBean> lista = adao.getTodosUsuarios();
-                    //List<UsuarioBean> usuariosBorrar = new ArrayList<>();
-
-                    //List<UsuarioBean> usuariosBorrar = Utils.rellenarListaBorrar2(eliminarUsuario);
+                    // Rellenamos la lista con los usuarios que vamos a borrar
                     List<UsuarioBean> usuariosBorrar = Utils.rellenarListaBorrar(eliminarUsuario, lista);
-
-                    //for (UsuarioBean usuario : lista) {
-                    //    for (String id : eliminarUsuario) {
-                    //        if (usuario.getId() == Short.parseShort(id)) {
-                    //            usuariosBorrar.add(usuario);
-                    //        }
-                    //    }
-                    //}
+                    /* Añadimos a la sesión la lista de usuarios a borrar y redirigimos al 
+                    usuario a la vista confirmarEliminarUsuario */
                     request.getSession().setAttribute("listaBorrar", usuariosBorrar);
                     url = "/JSP/CONFIRMACION/confirmarEliminarUsuario.jsp";
                 }
